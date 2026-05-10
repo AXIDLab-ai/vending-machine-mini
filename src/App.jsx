@@ -21,46 +21,103 @@ import {
 } from 'lucide-react'
 
 const tabs = [
-  { id: 'overview', label: '학습 흐름', icon: Home },
-  { id: 'ux', label: 'UX Layer', icon: MonitorSmartphone },
-  { id: 'reverse', label: '역엔지니어링', icon: Layers3 },
+  { id: 'overview', label: '수업 안내', icon: Home },
+  { id: 'method', label: '역엔지니어링 방법', icon: Layers3 },
+  { id: 'week11', label: '11주차 GUI', icon: MonitorSmartphone },
+  { id: 'week13', label: '13주차 소비자', icon: ShoppingCart },
+  { id: 'week14', label: '14주차 관리자', icon: Cog },
   { id: 'boilerplate', label: '보일러플레이트', icon: FileCode2 },
-  { id: 'customer', label: '소비자 함수', icon: ShoppingCart },
-  { id: 'admin', label: '관리자 함수', icon: Cog },
-  { id: 'oop', label: '파이썬 개념', icon: BookOpen },
+  { id: 'practice', label: '함수 실습', icon: Wrench },
   { id: 'export', label: 'Export', icon: Download },
+]
+
+const weekPlan = [
+  {
+    week: '11주차',
+    title: 'GUI 구조 이해와 화면 만들기',
+    subtitle: 'Presentation Layer',
+    goal: 'Tkinter 화면이 어떤 함수와 페이지 구조로 만들어지는지 이해한다.',
+    output: 'home, select, payment, complete, admin 화면 구조 주석 달기',
+    files: ['vendingmachineGUI.py', 'customer.py'],
+    concepts: ['Tkinter', 'Frame', 'Label', 'Button', 'Entry', 'pack', '페이지 전환'],
+  },
+  {
+    week: '13주차',
+    title: '소비자 모드 구현하기',
+    subtitle: 'Customer Logic',
+    goal: '음료 선택, 금액 입력, 결제, 거스름돈, 거래 저장 흐름을 구현한다.',
+    output: 'handle_payment(app) 완성',
+    files: ['customer.py', 'assets/data/log.json'],
+    concepts: ['조건문', '예외 처리', '딕셔너리', '리스트', 'JSON 저장', '함수 호출'],
+  },
+  {
+    week: '14주차',
+    title: '관리자 모드 구현하기',
+    subtitle: 'Admin Logic',
+    goal: '재고 확인, 가격 수정, 거래 내역 조회, 매출 계산을 구현한다.',
+    output: 'show_revenue_popup(root), calculate_revenue_by_date 완성',
+    files: ['admin.py', 'assets/data/beverage.json', 'assets/data/log.json'],
+    concepts: ['반복문', '파일 읽기', '파일 쓰기', '집계', '함수 분리', '오류 처리'],
+  },
+]
+
+const reverseSteps = [
+  {
+    title: '1. 구조 이해하기',
+    desc: '먼저 코드를 고치지 않는다. 파일이 몇 개이고, 각 파일이 무슨 역할을 하는지 읽는다.',
+    student: '파일 이름 옆에 “이 파일은 무엇을 담당하는가?”를 한 줄로 적는다.',
+    example: 'vendingmachineGUI.py = 전체 앱을 조립하고 페이지를 바꾸는 파일',
+  },
+  {
+    title: '2. 주석 달아보기',
+    desc: '함수 위에 “입력, 처리, 출력”을 주석으로 단다. 모르는 코드는 지우지 않고 표시한다.',
+    student: '각 함수에 # 입력, # 처리, # 결과 주석을 추가한다.',
+    example: 'select_drink(app, index): 선택한 음료 번호를 저장하고 결제 화면으로 이동한다.',
+  },
+  {
+    title: '3. 보일러플레이트에 흐름 주석 달기',
+    desc: '완성 코드를 보기 전에 빈 함수가 있는 시작 코드에 실행 흐름을 먼저 적는다.',
+    student: 'pass 위에 “여기서 무엇을 해야 하는가?”를 한국어 주석으로 쓴다.',
+    example: '# 1) 투입 금액을 숫자로 바꾼다 → # 2) 가격과 비교한다 → # 3) 재고를 줄인다',
+  },
+  {
+    title: '4. 작성하기',
+    desc: '한 번에 전체 앱을 만들지 않는다. 한 함수씩 작성하고 바로 실행한다.',
+    student: '오늘의 함수 하나만 완성한다. 안 되면 오류 메시지를 복사해 원인을 찾는다.',
+    example: '11주차: 화면 전환 / 13주차: handle_payment / 14주차: show_revenue_popup',
+  },
+  {
+    title: '5. 실행하고 디버깅하기',
+    desc: '실행 결과가 예상과 다르면 print, messagebox, JSON 파일을 확인한다.',
+    student: '오류 원인, 고친 내용, 배운 점을 실습 노트에 적는다.',
+    example: 'ValueError: 숫자가 아닌 값을 int로 바꾸려 해서 발생',
+  },
 ]
 
 const screens = {
   home: {
     title: 'Home',
-    goal: '앱 시작과 관리자 진입점을 보여준다.',
-    widgets: ['Label: 앱 제목', 'Image: 학교/프로젝트 로고', 'Button: 시작하기', 'Button: 설정'],
-    learning: '페이지 전환, 버튼 이벤트, 관리자 로그인 진입을 이해한다.',
+    goal: '앱 시작 화면. 시작하기 버튼은 음료 선택 화면으로, 설정 버튼은 관리자 로그인으로 이어진다.',
+    widgets: ['Label: Vending Machine 제목', 'Image: 로고', 'Button: 시작하기', 'Button: 설정'],
+    python: 'build_home_page(app)',
   },
   select: {
-    title: 'Drink Select',
-    goal: 'JSON에서 읽은 음료 목록을 사용자에게 보여준다.',
-    widgets: ['Label: 음료명과 가격', 'Button: 선택하기', 'Button: 홈으로 가기'],
-    learning: '반복문으로 UI 행을 만들고, lambda로 선택 index를 전달한다.',
+    title: 'Select',
+    goal: '음료 목록을 보여주고 사용자가 하나를 선택하게 한다.',
+    widgets: ['for 반복문', '음료명/가격 Label', '선택하기 Button', '홈으로 가기 Button'],
+    python: 'build_select_page(app), select_drink(app, index)',
   },
   payment: {
     title: 'Payment',
-    goal: '선택 음료의 가격과 투입 금액을 비교해 결제 결과를 판단한다.',
-    widgets: ['Entry: 투입 금액', 'Button: 1000/500/100/50/10원', 'Text: 거스름돈', 'Button: 결제하기'],
-    learning: '입력 검증, 조건문, 거스름돈 계산, 재고 업데이트를 학습한다.',
-  },
-  complete: {
-    title: 'Complete',
-    goal: '정상 결제 후 완료 상태를 보여준다.',
-    widgets: ['Label: 완료 메시지', 'Button: 홈으로 가기'],
-    learning: '상태 변화 이후 화면 전환을 이해한다.',
+    goal: '투입 금액을 입력하고 결제 여부를 판단한다.',
+    widgets: ['Entry: 투입 금액', '1000/500/100/50/10원 Button', 'Text: 거스름돈', 'Button: 결제하기'],
+    python: 'build_payment_page(app), handle_payment(app)',
   },
   admin: {
     title: 'Admin',
-    goal: '재고, 가격, 거래 내역, 매출 현황을 관리한다.',
-    widgets: ['Button: 재고 현황', 'Button: 가격 수정', 'Button: 거래 내역', 'Button: 매출 현황'],
-    learning: '관리자 기능을 독립 함수로 분리하고 파일 입출력과 리스트 처리를 학습한다.',
+    goal: '관리자가 재고, 가격, 거래, 매출을 확인한다.',
+    widgets: ['재고 현황 Button', '가격 수정 Button', '거래 내역 Button', '매출 현황 Button'],
+    python: 'AdminPage, show_stock_popup, edit_prices_popup, show_transactions_popup, show_revenue_popup',
   },
 }
 
@@ -78,160 +135,129 @@ const initialTransactions = [
   { time: '2026-05-09T16:22:00', item: '사이다', amount: 1100 },
 ]
 
-const architecture = [
-  {
-    file: 'vendingmachineGUI.py',
-    role: '앱 조립자 / Controller',
-    points: ['VendingMachineApp 클래스', '페이지 생성과 전환', 'JSON 데이터 로드', '관리자 로그인', 'customer.py와 admin.py 연결'],
-  },
-  {
-    file: 'customer.py',
-    role: '소비자 모드 / User Flow',
-    points: ['Home, Select, Payment, Complete 화면 생성', 'select_drink로 선택 상태 저장', 'handle_payment는 학생 실습용 빈 함수', '거래 내역 저장 함수'],
-  },
-  {
-    file: 'admin.py',
-    role: '관리자 모드 / Operation Logic',
-    points: ['재고 현황 팝업', '가격 수정 및 beverage.json 저장', '거래 내역 조회', 'show_revenue_popup은 학생 실습용 빈 함수'],
-  },
-]
-
 const boilerplates = {
-  gui: String.raw`# vendingmachineGUI.py
-# 앱 전체를 조립하는 Controller 파일
+  week11: String.raw`# 11주차 GUI 보일러플레이트
+# 목표: 화면을 만들고, 버튼을 눌렀을 때 페이지가 바뀌는 흐름을 이해한다.
 
 import tkinter as tk
-import json, os, sys
-from datetime import datetime
-
-from admin import show_stock_popup, edit_prices_popup, show_transactions_popup, show_revenue_popup
-from customer import build_home_page, build_select_page, build_payment_page, build_complete_page
-
-class AdminPage(tk.Frame):
-    def __init__(self, parent, app):
-        super().__init__(parent, bg="white")
-        self.app = app
-        # TODO: 관리자 버튼 4개를 배치한다.
-
-class VendingMachineApp(tk.Tk):
-    def __init__(self):
-        super().__init__()
-        self.title("Vending Machine")
-        self.geometry("390x844")
-        self.resizable(False, False)
-
-        self.drinks = []
-        self.stock = {}
-        self.transactions = []
-        self.selected_index = -1
-
-        self.load_beverages_from_file()
-        self.pages = {}
-        self._create_pages()
-        self._show_page("home")
-
-    def load_beverages_from_file(self):
-        # TODO: assets/data/beverage.json에서 음료 정보를 읽어온다.
-        pass
-
-    def _create_pages(self):
-        # TODO: home, select, payment, complete, admin 페이지를 만든다.
-        pass
-
-    def _show_page(self, name):
-        # TODO: 모든 페이지를 숨기고 선택한 페이지만 보여준다.
-        pass
-
-    def _admin_login(self):
-        # TODO: 비밀번호가 1234이면 admin 페이지로 이동한다.
-        pass
-
-if __name__ == "__main__":
-    app = VendingMachineApp()
-    app.mainloop()`,
-  customer: String.raw`# customer.py
-# 소비자 모드: 화면 생성, 음료 선택, 결제 처리
-
-import tkinter as tk
-from tkinter import messagebox
-from datetime import datetime
-import json, os, sys
-
-def save_transaction_to_file(app, transaction):
-    # TODO: assets/data/log.json에 거래 내역을 저장한다.
-    pass
 
 def build_home_page(app):
-    # TODO: 제목, 로고, 시작하기, 설정 버튼을 만든다.
-    pass
+    frame = tk.Frame(app, bg="white")
+
+    # TODO 1: 제목 Label 만들기
+    # 힌트: tk.Label(frame, text="...", bg="white").pack()
+
+    # TODO 2: 시작하기 Button 만들기
+    # 힌트: command=lambda: app._show_page("select")
+
+    # TODO 3: 설정 Button 만들기
+    # 힌트: command=app._admin_login
+
+    return frame
 
 def build_select_page(app):
-    # TODO: app.drinks를 반복하면서 음료 선택 버튼을 만든다.
-    pass
+    frame = tk.Frame(app, bg="white")
+
+    # TODO 1: "음료 선택하기" 제목 만들기
+
+    # TODO 2: app.drinks를 반복문으로 돌며 음료 행 만들기
+    # for idx, drink in enumerate(app.drinks):
+    #     음료명과 가격을 Label로 표시
+    #     선택하기 Button을 만들고 select_drink(app, idx) 연결
+
+    # TODO 3: 홈으로 가기 Button 만들기
+
+    return frame
 
 def select_drink(app, index):
-    # TODO: 선택 음료 index를 저장하고 payment 화면으로 이동한다.
-    pass
+    # TODO 1: app.selected_index에 index 저장
 
-def build_payment_page(app):
-    # TODO: 결제 금액, 투입 금액, 금액 버튼, 결제 버튼을 만든다.
-    pass
+    # TODO 2: 선택한 음료 가격을 payment_label에 표시
+
+    # TODO 3: payment 화면으로 이동
+    pass`,
+  week13: String.raw`# 13주차 소비자 함수 보일러플레이트
+# 목표: 결제 처리 흐름을 조건문과 예외 처리로 구현한다.
 
 def handle_payment(app):
-    # TODO: 금액 확인, 거스름돈 계산, 재고 차감, 거래 저장, 완료 화면 이동
-    pass
+    # 1. 음료를 선택했는지 확인한다.
+    # if app.selected_index < 0:
+    #     오류 메시지
+    #     return
 
-def build_complete_page(app):
-    # TODO: 결제 완료 메시지와 홈 이동 버튼을 만든다.
+    # 2. 선택한 음료 정보를 가져온다.
+    # drink = app.drinks[app.selected_index]
+    # name = drink["name"]
+    # price = drink["price"]
+
+    # 3. 투입 금액을 숫자로 바꾼다.
+    # try:
+    #     paid = int(app.money_entry.get())
+    # except ValueError:
+    #     오류 메시지
+    #     return
+
+    # 4. 재고가 있는지 확인한다.
+
+    # 5. 금액이 충분한지 확인한다.
+
+    # 6. 거스름돈을 계산한다.
+
+    # 7. 재고를 1 줄인다.
+
+    # 8. 거래 내역을 저장한다.
+
+    # 9. 완료 화면으로 이동한다.
     pass`,
-  admin: String.raw`# admin.py
-# 관리자 모드: 재고, 가격, 거래 내역, 매출 현황
+  week14: String.raw`# 14주차 관리자 함수 보일러플레이트
+# 목표: 거래 내역을 읽고 날짜별 매출을 계산한다.
 
-import os, json, sys
-from tkinter import messagebox
+def calculate_revenue_by_date(transactions, target_date):
+    # transactions는 거래 내역 리스트이다.
+    # target_date는 "2026-05-10" 같은 문자열이다.
 
-def show_stock_popup(root, drinks, stock):
-    # TODO: 음료별 재고를 팝업으로 보여준다.
-    pass
+    total = 0
 
-def edit_prices_popup(root, drinks, stock):
-    # TODO: 음료 가격을 수정하고 beverage.json에 저장한다.
-    pass
+    # TODO 1: transactions를 반복한다.
 
-def show_transactions_popup(root):
-    # TODO: log.json을 읽고 최근 거래 50개를 보여준다.
-    pass
+    # TODO 2: 거래 시간의 앞 10글자가 target_date와 같으면 amount를 더한다.
+
+    # TODO 3: total을 반환한다.
+    return total
 
 def show_revenue_popup(root):
-    # TODO: 날짜별 총 매출을 계산해서 보여준다.
-    pass`,
-  data: String.raw`// assets/data/beverage.json
-[
-  { "name": "콜라", "price": 1200, "stock": 5 },
-  { "name": "사이다", "price": 1100, "stock": 4 },
-  { "name": "물", "price": 800, "stock": 8 },
-  { "name": "커피", "price": 1500, "stock": 3 }
-]
+    # TODO 1: log.json 파일 경로를 만든다.
 
-// assets/data/log.json
-[
-  { "time": "2026-05-10T09:10:00", "item": "콜라", "amount": 1200 }
-]`,
+    # TODO 2: 파일이 있으면 거래 내역을 읽는다.
+    # 파일이 없으면 빈 리스트로 둔다.
+
+    # TODO 3: 오늘 날짜의 매출을 계산한다.
+
+    # TODO 4: Toplevel 팝업에 매출을 표시한다.
+    pass`,
+}
+
+function cx(...items) {
+  return items.filter(Boolean).join(' ')
 }
 
 function copyText(text) {
   if (navigator.clipboard) navigator.clipboard.writeText(text)
 }
 
-function Button({ children, onClick, variant = 'primary' }) {
-  return (
-    <button type="button" onClick={onClick} className={`button ${variant}`}>
-      {children}
-    </button>
-  )
+function makeChange(change) {
+  const coins = [1000, 500, 100, 50, 10]
+  let rest = Math.max(0, change)
+  const result = []
+  for (const coin of coins) {
+    const count = Math.floor(rest / coin)
+    if (count > 0) result.push({ coin, count })
+    rest %= coin
+  }
+  return result
 }
 
-function Section({ title, description, actions, children }) {
+function Section({ title, description, children, actions }) {
   return (
     <section className="section">
       <div className="sectionHeader">
@@ -246,7 +272,7 @@ function Section({ title, description, actions, children }) {
   )
 }
 
-function Card({ title, icon: Icon, children }) {
+function Card({ title, children, icon: Icon }) {
   return (
     <div className="card">
       <div className="cardTitle">
@@ -255,6 +281,14 @@ function Card({ title, icon: Icon, children }) {
       </div>
       <div className="cardBody">{children}</div>
     </div>
+  )
+}
+
+function Button({ children, onClick, variant = 'primary', disabled = false }) {
+  return (
+    <button type="button" onClick={onClick} disabled={disabled} className={cx('button', variant)}>
+      {children}
+    </button>
   )
 }
 
@@ -268,18 +302,6 @@ function CodeBlock({ title, code }) {
       <pre>{code}</pre>
     </div>
   )
-}
-
-function makeChange(change) {
-  const coins = [1000, 500, 100, 50, 10]
-  let rest = Math.max(0, change)
-  const result = []
-  for (const coin of coins) {
-    const count = Math.floor(rest / coin)
-    if (count > 0) result.push({ coin, count })
-    rest %= coin
-  }
-  return result
 }
 
 function PhoneMockup({ screen, totalMoney, selectedDrink }) {
@@ -298,7 +320,7 @@ function PhoneMockup({ screen, totalMoney, selectedDrink }) {
             <div>
               <div className="emojiLogo">🥤</div>
               <h3>Vending Machine<br />2025<br />TU Korea</h3>
-              <p>학부 1학년 파이썬 미니 프로젝트</p>
+              <p>경영학부 1학년 파이썬 미니 프로젝트</p>
             </div>
             <div className="phoneActions">
               <div className="phonePrimary">시작하기</div>
@@ -344,17 +366,6 @@ function PhoneMockup({ screen, totalMoney, selectedDrink }) {
           </div>
         )}
 
-        {screen === 'complete' && (
-          <div className="phoneCenter">
-            <div>
-              <div className="emojiLogo success">✅</div>
-              <h3>결제가 완료되었습니다</h3>
-              <p>거래 내역 저장, 재고 차감, 완료 화면 전환</p>
-            </div>
-            <div className="phoneSecondary">홈으로 가기</div>
-          </div>
-        )}
-
         {screen === 'admin' && (
           <div className="phoneContent">
             <h3>관리자 설정</h3>
@@ -371,15 +382,27 @@ function PhoneMockup({ screen, totalMoney, selectedDrink }) {
   )
 }
 
+function WeekCard({ item }) {
+  return (
+    <Card title={`${item.week} · ${item.title}`} icon={BookOpen}>
+      <p className="role">{item.subtitle}</p>
+      <p><strong>목표:</strong> {item.goal}</p>
+      <p><strong>산출물:</strong> {item.output}</p>
+      <p><strong>파일:</strong> {item.files.join(', ')}</p>
+      <div className="conceptGrid">
+        {item.concepts.map((concept) => <div key={concept}>{concept}</div>)}
+      </div>
+    </Card>
+  )
+}
+
 function App() {
   const [active, setActive] = useState('overview')
   const [screen, setScreen] = useState('home')
-  const [selectedBoilerplate, setSelectedBoilerplate] = useState('customer')
+  const [boilerplate, setBoilerplate] = useState('week11')
   const [selectedDrinkName, setSelectedDrinkName] = useState('콜라')
   const [money, setMoney] = useState(1500)
   const [stockInput, setStockInput] = useState(5)
-  const [priceEditName, setPriceEditName] = useState('콜라')
-  const [newPrice, setNewPrice] = useState(1300)
   const [revenueDate, setRevenueDate] = useState('2026-05-10')
 
   const selectedDrink = initialDrinks.find((drink) => drink.name === selectedDrinkName) ?? initialDrinks[0]
@@ -387,139 +410,110 @@ function App() {
   const paymentResult = useMemo(() => {
     if (stockInput <= 0) return { ok: false, message: '재고가 없습니다.', changeMap: [] }
     if (money < selectedDrink.price) return { ok: false, message: `금액이 부족합니다. ${selectedDrink.price - money}원이 더 필요합니다.`, changeMap: [] }
+
     const change = money - selectedDrink.price
     return { ok: true, message: `결제 완료. 거스름돈은 ${change.toLocaleString()}원입니다.`, changeMap: makeChange(change) }
   }, [money, selectedDrink, stockInput])
 
   const revenue = useMemo(() => {
-    return initialTransactions.filter((tx) => tx.time.startsWith(revenueDate)).reduce((sum, tx) => sum + tx.amount, 0)
+    return initialTransactions
+      .filter((tx) => tx.time.startsWith(revenueDate))
+      .reduce((sum, tx) => sum + tx.amount, 0)
   }, [revenueDate])
 
-  const adminResult = useMemo(() => {
-    const target = initialDrinks.find((drink) => drink.name === priceEditName) ?? initialDrinks[0]
-    const parsed = Number(newPrice)
-    const valid = Number.isInteger(parsed) && parsed > 0
-    return {
-      target,
-      valid,
-      message: valid ? `${target.name} 가격을 ${parsed.toLocaleString()}원으로 수정할 수 있습니다.` : '가격은 0보다 큰 정수여야 합니다.',
-    }
-  }, [priceEditName, newPrice])
+  const week11Guide = String.raw`# 11주차 GUI 실습 순서
 
-  const customerSolution = String.raw`def handle_payment(app):
-    if app.selected_index < 0:
-        messagebox.showerror("오류", "음료를 먼저 선택하세요.")
-        return
+## 오늘의 목표
+Tkinter 자판기 앱의 화면 구조를 이해하고, 화면 전환 흐름을 따라 만든다.
 
-    drink = app.drinks[app.selected_index]
-    name = drink["name"]
-    price = drink["price"]
+## 따라 하기
+1. vendingmachineGUI.py를 열고 VendingMachineApp 클래스를 찾는다.
+2. __init__에서 self.drinks, self.stock, self.pages가 무엇인지 주석을 단다.
+3. _create_pages 함수가 어떤 화면을 만드는지 주석을 단다.
+4. _show_page 함수가 왜 필요한지 주석을 단다.
+5. customer.py에서 build_home_page, build_select_page, build_payment_page를 찾는다.
+6. 각 함수 위에 “이 화면은 무엇을 보여주는가?”를 주석으로 쓴다.
+7. 보일러플레이트에 주석으로 화면 흐름을 먼저 달고, 그 다음 코드를 작성한다.
 
-    try:
-        paid = int(app.money_entry.get())
-    except ValueError:
-        messagebox.showerror("오류", "투입 금액은 숫자여야 합니다.")
-        return
+## 제출
+- 주석이 달린 vendingmachineGUI.py
+- 주석이 달린 customer.py
+- 실행 화면 캡처`
 
-    if app.stock.get(name, 0) <= 0:
-        messagebox.showerror("오류", "재고가 없습니다.")
-        return
+  const week13Guide = String.raw`# 13주차 소비자 모드 실습 순서
 
-    if paid < price:
-        messagebox.showerror("오류", f"금액이 부족합니다. {price - paid}원이 더 필요합니다.")
-        return
+## 오늘의 목표
+handle_payment(app)를 완성한다.
 
-    change = paid - price
-    app.stock[name] -= 1
+## 따라 하기
+1. customer.py에서 handle_payment(app)를 찾는다.
+2. 함수 안에 처리 순서를 한국어 주석으로 먼저 쓴다.
+3. 선택 음료가 있는지 확인한다.
+4. 투입 금액을 int로 바꾼다.
+5. 재고가 있는지 확인한다.
+6. 가격보다 금액이 충분한지 확인한다.
+7. 거스름돈을 계산한다.
+8. 재고를 1 줄인다.
+9. save_transaction_to_file(app, transaction)을 호출한다.
+10. complete 화면으로 이동한다.
 
-    transaction = {
-        "time": datetime.now().isoformat(),
-        "item": name,
-        "amount": price
-    }
-    save_transaction_to_file(app, transaction)
+## 테스트
+- 음료 선택 없이 결제하면 오류가 나는가?
+- 돈이 부족하면 부족 금액이 보이는가?
+- 재고가 0이면 구매가 막히는가?
+- 정상 결제하면 재고가 줄어드는가?
+- log.json에 거래가 저장되는가?`
 
-    app.change_text.delete("1.0", tk.END)
-    app.change_text.insert(tk.END, f"거스름돈: {change}원\n")
-    app._show_page("complete")`
+  const week14Guide = String.raw`# 14주차 관리자 모드 실습 순서
 
-  const adminSolution = String.raw`def calculate_revenue_by_date(transactions, target_date):
-    total = 0
-    for tx in transactions:
-        if tx["time"].startswith(target_date):
-            total += tx["amount"]
-    return total
+## 오늘의 목표
+관리자 기능 중 매출 현황을 완성한다.
 
-def update_price(drinks, name, new_price):
-    if not isinstance(new_price, int) or new_price <= 0:
-        raise ValueError("가격은 0보다 큰 정수여야 합니다.")
+## 따라 하기
+1. admin.py에서 show_revenue_popup(root)를 찾는다.
+2. show_transactions_popup(root)가 log.json을 어떻게 읽는지 참고한다.
+3. calculate_revenue_by_date(transactions, target_date) 함수를 새로 만든다.
+4. 거래 시간의 앞 10글자와 target_date를 비교한다.
+5. 날짜가 같으면 amount를 total에 더한다.
+6. Toplevel 팝업에 오늘 매출을 표시한다.
+7. 잘못된 파일 경로나 빈 거래 내역도 처리한다.
 
-    for drink in drinks:
-        if drink["name"] == name:
-            drink["price"] = new_price
-            return drink
+## 테스트
+- 거래 내역이 없으면 0원이 나오는가?
+- 2026-05-10 거래만 합산되는가?
+- 다른 날짜 거래는 제외되는가?
+- 팝업이 열리는가?`
 
-    raise ValueError("해당 음료를 찾을 수 없습니다.")
+  const exportGuide = String.raw`# 한국공학대학교 경영학부 1학년 파이썬 미니 프로젝트
+## 자판기 앱 역엔지니어링 실습
+### 강송희 교수 강의자료
 
-def show_revenue_popup(root):
-    from tkinter import Toplevel, Label
-    base_path = getattr(sys, "_MEIPASS", os.path.abspath("."))
-    path = os.path.join(base_path, "assets", "data", "log.json")
+## 수업 구성
 
-    if os.path.exists(path):
-        with open(path, "r", encoding="utf-8") as f:
-            transactions = json.load(f)
-    else:
-        transactions = []
+### 11주차 GUI
+- 목표: Presentation Layer 이해
+- 파일: vendingmachineGUI.py, customer.py
+- 산출물: 화면 구조 주석, 페이지 전환 흐름 설명, 기본 GUI 실행
 
-    today = datetime.now().strftime("%Y-%m-%d")
-    revenue = calculate_revenue_by_date(transactions, today)
+### 13주차 소비자
+- 목표: Customer Logic 구현
+- 파일: customer.py
+- 산출물: handle_payment(app) 완성
+- 핵심 개념: 조건문, 예외 처리, 재고 차감, 거스름돈 계산, 거래 저장
 
-    win = Toplevel(root)
-    win.title("매출 현황")
-    Label(win, text=f"{today} 매출: {revenue}원").pack(pady=20)`
+### 14주차 관리자
+- 목표: Admin Logic 구현
+- 파일: admin.py
+- 산출물: show_revenue_popup(root), calculate_revenue_by_date 완성
+- 핵심 개념: JSON 읽기, 반복문, 날짜 필터링, 매출 집계
 
-  const exportGuide = String.raw`# 자판기 미니 프로젝트 실습 산출물
+## 역엔지니어링 방법
 
-## 1. Presentation Layer
-- Home: 시작하기 / 설정
-- Select: 음료 목록 / 선택하기
-- Payment: 투입 금액 / 결제하기 / 거스름돈
-- Complete: 결제 완료
-- Admin: 재고 / 가격 / 거래 / 매출
-
-## 2. Reverse Engineering
-- vendingmachineGUI.py: 전체 앱 조립, 페이지 전환, 데이터 로드
-- customer.py: 소비자 화면과 결제 흐름
-- admin.py: 관리자 기능과 파일 저장
-
-## 3. Boilerplate
-- GUI Controller
-- Customer Mode
-- Admin Mode
-- JSON Data
-
-## 4. Practice Functions
-### Customer
-- handle_payment(app)
-- save_transaction_to_file(app, transaction)
-- select_drink(app, index)
-
-### Admin
-- calculate_revenue_by_date(transactions, target_date)
-- update_price(drinks, name, new_price)
-- show_revenue_popup(root)
-
-## 5. 핵심 파이썬 개념
-- 함수 분리
-- 조건문
-- 반복문
-- 리스트/딕셔너리
-- JSON 파일 입출력
-- Tkinter 이벤트 처리
-- 클래스와 객체
-- 모듈 분리
-- 예외 처리`
+1. 구조 이해하기
+2. 주석 달아보기
+3. 보일러플레이트에 흐름 주석 달기
+4. 작성하기
+5. 실행하고 디버깅하기`
 
   return (
     <div className="app">
@@ -528,7 +522,7 @@ def show_revenue_popup(root):
           <div className="brand">
             <div className="brandIcon"><Boxes size={28} /></div>
             <h1>Vending Machine Python Project Lab</h1>
-            <p>학부 1학년용 자판기 앱 역엔지니어링 × 함수 실습 도구</p>
+            <p>한국공학대학교 경영학부 1학년 · 강송희 교수 강의자료</p>
           </div>
 
           <nav className="nav">
@@ -548,14 +542,18 @@ def show_revenue_popup(root):
         <main className="main">
           <header className="hero">
             <div>
-              <p className="eyebrow">Python Mini Project Builder</p>
-              <h1>자판기 앱을 읽고, 쪼개고, 다시 만드는 실습 앱</h1>
-              <p>Tkinter 기반 자판기 프로젝트를 UX 계층, 소비자 로직, 관리자 로직으로 분해하고 학습자가 빈 함수를 직접 완성하도록 설계했습니다.</p>
+              <p className="eyebrow">Korea Polytechnic University · Business Administration</p>
+              <h1>자판기 앱을 3주에 걸쳐 그대로 따라 만드는 파이썬 미니 프로젝트</h1>
+              <p>
+                한국공학대학교 경영학부 1학년 대상 강의자료입니다. 기존 Tkinter 자판기 앱을 먼저 읽고,
+                구조에 주석을 달고, 보일러플레이트에 흐름을 적은 뒤, GUI → 소비자 → 관리자 순서로 직접 구현합니다.
+              </p>
             </div>
             <div className="heroActions">
-              <Button variant="ghost" onClick={() => setActive('ux')}><Play size={16} /> 시작</Button>
-              <Button onClick={() => setActive('export')}><Download size={16} /> 산출물</Button>
+              <Button variant="ghost" onClick={() => setActive('method')}><Play size={16} /> 학습법</Button>
+              <Button onClick={() => setActive('week11')}><BookOpen size={16} /> 11주차 시작</Button>
             </div>
+
             <div className="mobileTabs">
               {tabs.map((tab) => (
                 <button key={tab.id} onClick={() => setActive(tab.id)} className={active === tab.id ? 'selected' : ''}>{tab.label}</button>
@@ -564,67 +562,167 @@ def show_revenue_popup(root):
           </header>
 
           {active === 'overview' && (
-            <Section title="학습 목표와 진행 흐름" description="이 앱의 목적은 완성 코드를 주는 것이 아니라, 학생이 자판기 프로젝트를 구조적으로 이해하고 단계별로 함수를 완성하게 하는 것입니다.">
-              <div className="grid four">
-                <Card title="1. UX 계층 보기" icon={MonitorSmartphone}>Tkinter 화면을 스마트폰 목업으로 다시 보며 Home, Select, Payment, Admin 화면의 역할을 이해합니다.</Card>
-                <Card title="2. 역엔지니어링" icon={Layers3}>vendingmachineGUI.py, customer.py, admin.py의 역할을 나누고 함수 호출 흐름을 따라갑니다.</Card>
-                <Card title="3. 보일러플레이트" icon={FileCode2}>학생에게 빈 함수가 포함된 시작 코드를 제공합니다. 바로 완성 코드부터 주지 않습니다.</Card>
-                <Card title="4. 함수 실습" icon={Wrench}>소비자는 handle_payment, 관리자는 show_revenue_popup과 가격/재고 함수를 직접 구현합니다.</Card>
+            <Section title="수업 안내" description="이 앱은 완성 코드를 외우는 자료가 아니라, 기존 프로젝트를 읽고 단계별로 다시 만드는 학습 도구입니다.">
+              <div className="grid three">
+                {weekPlan.map((item) => <WeekCard key={item.week} item={item} />)}
               </div>
-              <div className="note"><h3>강의 메시지</h3><p>윈도우 프로그래밍은 버튼을 배치하는 일이 아니라, 이벤트가 상태를 어떻게 바꾸는지 이해하는 일입니다. 객체지향 프로그래밍은 클래스를 외우는 일이 아니라, 앱 전체 상태를 어디에 둘지 결정하는 일입니다.</p></div>
+              <div className="note">
+                <h3>경영학부 1학년에게 맞춘 운영 원칙</h3>
+                <p>
+                  처음부터 객체지향, 파일 입출력, 예외 처리를 이론으로 길게 설명하지 않습니다.
+                  먼저 화면을 보고, 버튼을 눌러 보고, 그 버튼이 어떤 함수로 연결되는지 따라갑니다.
+                  그 다음 한 함수씩 직접 완성합니다.
+                </p>
+              </div>
             </Section>
           )}
 
-          {active === 'ux' && (
-            <Section title="UX / Presentation Layer" description="학생은 먼저 사용자가 보는 화면을 이해합니다. 그런 다음 이 화면이 어떤 파이썬 함수로 만들어졌는지 연결합니다.">
+          {active === 'method' && (
+            <Section title="역엔지니어링 방법" description="학생들이 코드를 무작정 따라 치지 않도록, 읽기 → 주석 → 흐름 정리 → 작성 → 디버깅 순서로 갑니다.">
+              <div className="grid three">
+                {reverseSteps.map((step) => (
+                  <Card key={step.title} title={step.title} icon={Layers3}>
+                    <p>{step.desc}</p>
+                    <p><strong>학생 활동:</strong> {step.student}</p>
+                    <p><strong>예시:</strong> {step.example}</p>
+                  </Card>
+                ))}
+              </div>
+            </Section>
+          )}
+
+          {active === 'week11' && (
+            <Section title="11주차 GUI: 화면 구조와 페이지 전환" description="목표는 예쁜 화면을 만드는 것이 아니라, Tkinter 화면이 함수와 객체 상태로 어떻게 연결되는지 이해하는 것입니다.">
               <div className="split">
                 <div>
-                  <div className="pillRow">{Object.keys(screens).map((key) => <Button key={key} variant={screen === key ? 'primary' : 'ghost'} onClick={() => setScreen(key)}>{screens[key].title}</Button>)}</div>
+                  <div className="pillRow">
+                    {Object.keys(screens).map((key) => (
+                      <Button key={key} variant={screen === key ? 'primary' : 'ghost'} onClick={() => setScreen(key)}>{screens[key].title}</Button>
+                    ))}
+                  </div>
                   <PhoneMockup screen={screen} totalMoney={money} selectedDrink={selectedDrink} />
                 </div>
                 <div className="stack">
-                  <Card title={`${screens[screen].title} 화면 정의`} icon={MonitorSmartphone}><strong>목적</strong><p>{screens[screen].goal}</p><strong>학습 포인트</strong><p>{screens[screen].learning}</p></Card>
-                  <Card title="Widget Breakdown" icon={Clipboard}><ul className="cleanList">{screens[screen].widgets.map((item) => <li key={item}><Check size={16} /> <span>{item}</span></li>)}</ul></Card>
-                  <Card title="Tkinter → 학습 개념" icon={Code2}><div className="conceptGrid">{['Frame = 화면 단위', 'Label = 정보 표시', 'Button = 이벤트 발생', 'Entry = 사용자 입력', 'Text/Listbox = 결과 출력', 'pack = 레이아웃 배치'].map((x) => <div key={x}>{x}</div>)}</div></Card>
+                  <Card title={`${screens[screen].title} 화면 읽기`} icon={MonitorSmartphone}>
+                    <p><strong>화면 목적:</strong> {screens[screen].goal}</p>
+                    <p><strong>연결 함수:</strong> {screens[screen].python}</p>
+                    <ul className="cleanList">
+                      {screens[screen].widgets.map((item) => <li key={item}><Check size={16} /> <span>{item}</span></li>)}
+                    </ul>
+                  </Card>
+                  <CodeBlock title="11주차 실습 안내" code={week11Guide} />
                 </div>
               </div>
             </Section>
           )}
 
-          {active === 'reverse' && (
-            <Section title="역엔지니어링: 기존 코드를 구조로 읽기" description="학생에게 '코드가 길다'가 아니라 '역할이 나뉘어 있다'는 것을 보여줍니다.">
-              <div className="grid three">{architecture.map((item) => <Card key={item.file} title={item.file} icon={FileCode2}><p className="role">{item.role}</p><ul className="cleanList">{item.points.map((point) => <li key={point}><ChevronRight size={16} /> <span>{point}</span></li>)}</ul></Card>)}</div>
-              <div className="flowBox"><h3>호출 흐름</h3><div className="flowGrid">{['VendingMachineApp', '_create_pages', 'build_*_page', 'Button command', '상태 변경 / 파일 저장'].map((step, i) => <div key={step}><small>STEP {i + 1}</small><strong>{step}</strong></div>)}</div></div>
+          {active === 'week13' && (
+            <Section title="13주차 소비자: 결제 흐름 만들기" description="소비자 모드는 사용자가 돈을 넣고 음료를 사는 흐름입니다. 이 단계에서 조건문, 예외 처리, 재고 차감, 거래 저장을 배웁니다.">
+              <div className="split equal">
+                <div className="stack">
+                  <Card title="결제 시뮬레이터" icon={ShoppingCart}>
+                    <div className="formGrid">
+                      <label>
+                        <span>음료</span>
+                        <select value={selectedDrinkName} onChange={(e) => setSelectedDrinkName(e.target.value)}>
+                          {initialDrinks.map((drink) => <option key={drink.name}>{drink.name}</option>)}
+                        </select>
+                      </label>
+                      <label>
+                        <span>투입 금액</span>
+                        <input value={money} onChange={(e) => setMoney(Number(e.target.value))} type="number" />
+                      </label>
+                      <label>
+                        <span>재고</span>
+                        <input value={stockInput} onChange={(e) => setStockInput(Number(e.target.value))} type="number" />
+                      </label>
+                    </div>
+                    <div className={paymentResult.ok ? 'result ok' : 'result bad'}>
+                      <strong>{paymentResult.ok ? '정상 결제 가능' : '결제 불가'}</strong>
+                      <p>{paymentResult.message}</p>
+                      <div className="coinResult">
+                        {paymentResult.changeMap.map((item) => <span key={item.coin}>{item.coin}원 × {item.count}</span>)}
+                      </div>
+                    </div>
+                  </Card>
+                  <CodeBlock title="13주차 실습 안내" code={week13Guide} />
+                </div>
+                <CodeBlock title="13주차 보일러플레이트" code={boilerplates.week13} />
+              </div>
+            </Section>
+          )}
+
+          {active === 'week14' && (
+            <Section title="14주차 관리자: 매출과 운영 관리" description="관리자 모드는 데이터를 읽고 집계하는 단계입니다. 학생은 거래 내역 JSON을 읽어 날짜별 매출을 계산합니다.">
+              <div className="split equal">
+                <div className="stack">
+                  <Card title="매출 계산 시뮬레이터" icon={ReceiptText}>
+                    <label className="field">
+                      <span>날짜</span>
+                      <input value={revenueDate} onChange={(e) => setRevenueDate(e.target.value)} />
+                    </label>
+                    <div className="metric">
+                      <span>총 매출</span>
+                      <strong>{revenue.toLocaleString()}원</strong>
+                    </div>
+                  </Card>
+                  <CodeBlock title="14주차 실습 안내" code={week14Guide} />
+                </div>
+                <CodeBlock title="14주차 보일러플레이트" code={boilerplates.week14} />
+              </div>
             </Section>
           )}
 
           {active === 'boilerplate' && (
-            <Section title="보일러플레이트 생성기" description="학생에게 완성 코드가 아니라 '빈칸이 있는 시작 코드'를 줍니다.">
-              <div className="pillRow">{Object.keys(boilerplates).map((key) => <Button key={key} variant={selectedBoilerplate === key ? 'primary' : 'ghost'} onClick={() => setSelectedBoilerplate(key)}>{key}</Button>)}</div>
-              <CodeBlock title={`${selectedBoilerplate} boilerplate`} code={boilerplates[selectedBoilerplate]} />
+            <Section title="보일러플레이트: 빈칸 코드부터 시작하기" description="완성 코드를 바로 주지 않습니다. 학생은 먼저 TODO 주석을 읽고, 흐름을 한국어로 더 적은 뒤, 코드를 작성합니다.">
+              <div className="pillRow">
+                <Button variant={boilerplate === 'week11' ? 'primary' : 'ghost'} onClick={() => setBoilerplate('week11')}>11주차 GUI</Button>
+                <Button variant={boilerplate === 'week13' ? 'primary' : 'ghost'} onClick={() => setBoilerplate('week13')}>13주차 소비자</Button>
+                <Button variant={boilerplate === 'week14' ? 'primary' : 'ghost'} onClick={() => setBoilerplate('week14')}>14주차 관리자</Button>
+              </div>
+              <CodeBlock title={`${boilerplate} boilerplate`} code={boilerplates[boilerplate]} />
             </Section>
           )}
 
-          {active === 'customer' && (
-            <Section title="소비자 실습용 함수: handle_payment" description="결제 함수는 조건문, 예외 처리, 딕셔너리, 상태 변경, 파일 저장을 한 번에 연습할 수 있는 핵심 함수입니다.">
-              <div className="split equal"><div className="stack"><Card title="실습 시뮬레이터" icon={ShoppingCart}><div className="formGrid"><label><span>음료</span><select value={selectedDrinkName} onChange={(e) => setSelectedDrinkName(e.target.value)}>{initialDrinks.map((drink) => <option key={drink.name}>{drink.name}</option>)}</select></label><label><span>투입 금액</span><input value={money} onChange={(e) => setMoney(Number(e.target.value))} type="number" /></label><label><span>재고</span><input value={stockInput} onChange={(e) => setStockInput(Number(e.target.value))} type="number" /></label></div><div className={paymentResult.ok ? 'result ok' : 'result bad'}><strong>{paymentResult.ok ? '통과' : '오류'}</strong><p>{paymentResult.message}</p><div className="coinResult">{paymentResult.changeMap.map((item) => <span key={item.coin}>{item.coin}원 × {item.count}</span>)}</div></div></Card><Card title="학생이 구현할 조건" icon={ShieldCheck}><ul className="cleanList">{['선택된 음료가 없으면 오류', '투입 금액이 숫자가 아니면 오류', '재고가 0이면 오류', '투입 금액이 가격보다 작으면 부족 금액 안내', '정상 결제면 재고 1 감소', '거래 내역을 log.json에 저장', '완료 화면으로 이동'].map((x) => <li key={x}><Check size={16} /> {x}</li>)}</ul></Card></div><CodeBlock title="handle_payment 예시 해답" code={customerSolution} /></div>
-            </Section>
-          )}
-
-          {active === 'admin' && (
-            <Section title="관리자 실습용 함수: 매출·가격·재고" description="관리자 기능은 리스트 순회, JSON 파일 입출력, 예외 처리, 데이터 집계를 연습하기 좋습니다.">
-              <div className="split equal"><div className="stack"><Card title="매출 계산 실습" icon={ReceiptText}><label className="field"><span>날짜</span><input value={revenueDate} onChange={(e) => setRevenueDate(e.target.value)} /></label><div className="metric"><span>총 매출</span><strong>{revenue.toLocaleString()}원</strong></div></Card><Card title="가격 수정 검증" icon={Cog}><div className="formGrid two"><label><span>음료</span><select value={priceEditName} onChange={(e) => setPriceEditName(e.target.value)}>{initialDrinks.map((drink) => <option key={drink.name}>{drink.name}</option>)}</select></label><label><span>새 가격</span><input value={newPrice} onChange={(e) => setNewPrice(e.target.value)} type="number" /></label></div><div className={adminResult.valid ? 'result ok' : 'result bad'}>{adminResult.message}</div></Card><Card title="학생이 구현할 조건" icon={ShieldCheck}><ul className="cleanList">{['거래 내역이 없으면 0원', '날짜가 같은 거래만 합산', '가격은 0보다 큰 정수', '없는 음료명은 오류', '수정 후 beverage.json에 저장', '최근 거래 50개만 표시'].map((x) => <li key={x}><Check size={16} /> {x}</li>)}</ul></Card></div><CodeBlock title="admin.py 예시 해답" code={adminSolution} /></div>
-            </Section>
-          )}
-
-          {active === 'oop' && (
-            <Section title="이 프로젝트로 가르칠 파이썬 개념" description="자판기 앱은 학부 1학년에게 파이썬 전반을 압축해서 보여줄 수 있는 프로젝트입니다.">
-              <div className="grid three"><Card title="윈도우 프로그래밍" icon={MonitorSmartphone}>Tkinter의 Frame, Label, Button, Entry, Text, Listbox를 통해 화면 구성과 이벤트 처리를 학습합니다.</Card><Card title="객체지향 프로그래밍" icon={Boxes}>VendingMachineApp 객체가 drinks, stock, selected_index 같은 앱 상태를 소유한다는 점을 학습합니다.</Card><Card title="모듈 분리" icon={Layers3}>GUI 조립자, 소비자 로직, 관리자 로직을 다른 파일로 분리해 코드 구조를 이해합니다.</Card><Card title="자료구조" icon={Clipboard}>음료는 리스트 안의 딕셔너리, 재고는 딕셔너리, 거래는 리스트로 저장됩니다.</Card><Card title="파일 입출력" icon={ReceiptText}>beverage.json과 log.json을 읽고 쓰며 영속성의 개념을 배웁니다.</Card><Card title="예외 처리" icon={ShieldCheck}>숫자 입력 오류, 파일 없음, 잘못된 가격, 재고 부족을 try/except와 조건문으로 처리합니다.</Card></div>
+          {active === 'practice' && (
+            <Section title="함수 실습 체크리스트" description="각 주차마다 '읽기 → 주석 → 작성 → 실행 → 기록'을 반복합니다.">
+              <div className="grid three">
+                <Card title="11주차 GUI 체크" icon={MonitorSmartphone}>
+                  <ul className="cleanList">
+                    <li><Check size={16} /> VendingMachineApp 클래스에 주석을 달았다.</li>
+                    <li><Check size={16} /> _create_pages 흐름을 설명할 수 있다.</li>
+                    <li><Check size={16} /> _show_page가 왜 필요한지 말할 수 있다.</li>
+                    <li><Check size={16} /> build_home_page를 따라 만들었다.</li>
+                  </ul>
+                </Card>
+                <Card title="13주차 소비자 체크" icon={ShoppingCart}>
+                  <ul className="cleanList">
+                    <li><Check size={16} /> handle_payment 처리 순서를 주석으로 썼다.</li>
+                    <li><Check size={16} /> 금액 부족을 처리했다.</li>
+                    <li><Check size={16} /> 재고 부족을 처리했다.</li>
+                    <li><Check size={16} /> 거래 내역 저장을 호출했다.</li>
+                  </ul>
+                </Card>
+                <Card title="14주차 관리자 체크" icon={Cog}>
+                  <ul className="cleanList">
+                    <li><Check size={16} /> log.json 구조를 이해했다.</li>
+                    <li><Check size={16} /> 날짜별 매출을 계산했다.</li>
+                    <li><Check size={16} /> 빈 거래 내역을 처리했다.</li>
+                    <li><Check size={16} /> 매출 팝업을 열었다.</li>
+                  </ul>
+                </Card>
+              </div>
             </Section>
           )}
 
           {active === 'export' && (
-            <Section title="수업용 산출물 Export" description="이 내용을 Markdown으로 복사해 LMS, GitHub README, 실습지에 붙여넣을 수 있습니다." actions={<Button onClick={() => copyText(exportGuide)}><Clipboard size={16} /> 전체 복사</Button>}><CodeBlock title="vending_project_lab_guide.md" code={exportGuide} /></Section>
+            <Section
+              title="수업용 산출물 Export"
+              description="LMS, GitHub README, 실습 안내문에 붙여넣을 수 있는 요약입니다."
+              actions={<Button onClick={() => copyText(exportGuide)}><Clipboard size={16} /> 전체 복사</Button>}
+            >
+              <CodeBlock title="vending_project_3week_plan.md" code={exportGuide} />
+            </Section>
           )}
         </main>
       </div>

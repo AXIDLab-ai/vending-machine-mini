@@ -674,7 +674,7 @@ handle_payment(app)를 완성한다.
           )}
 
           {active === 'boilerplate' && (
-            <Section title="보일러플레이트: 빈칸 코드부터 시작하기" description="완성 코드를 바로 주지 않습니다. 학생은 먼저 TODO 주석을 읽고, 흐름을 한국어로 더 적은 뒤, 코드를 작성합니다.">
+            <Section title="보일러플레이트: 빈칸 코드부터 시작하기" description="완성 코드를 먼저 보기보다, 학생은 먼저 TODO 주석을 읽고, 흐름을 한국어로 더 적은 뒤, 코드를 작성합니다.">
               <div className="pillRow">
                 <Button variant={boilerplate === 'week11' ? 'primary' : 'ghost'} onClick={() => setBoilerplate('week11')}>11주차 GUI</Button>
                 <Button variant={boilerplate === 'week13' ? 'primary' : 'ghost'} onClick={() => setBoilerplate('week13')}>13주차 소비자</Button>

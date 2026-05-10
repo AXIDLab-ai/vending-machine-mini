@@ -542,7 +542,7 @@ handle_payment(app)를 완성한다.
         <main className="main">
           <header className="hero">
             <div>
-              <p className="eyebrow">Korea Polytechnic University · Business Administration</p>
+              <p className="eyebrow">TU Korea · Business Administration</p>
               <h1>자판기 앱을 3주에 걸쳐 그대로 따라 만드는 파이썬 미니 프로젝트</h1>
               <p>
                 한국공학대학교 경영학부 1학년 대상 강의자료입니다. 기존 Tkinter 자판기 앱을 먼저 읽고,
